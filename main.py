@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QColor, QPen
-from PySide6.QtWidgets import QApplication, QGraphicsEllipseItem, QGraphicsScene, QGraphicsView, QMainWindow
+from PySide6.QtWidgets import QApplication, QGraphicsEllipseItem, QGraphicsScene, QGraphicsView
 
 app = QApplication([])
 
@@ -20,10 +20,6 @@ view.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
 view.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
 view.setStyleSheet("background: transparent; border: none;")
 
-window = QMainWindow()
-window.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-window.setCentralWidget(view)
-window.show()
 
 _ = app.exec()
 
