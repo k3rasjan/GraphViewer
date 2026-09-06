@@ -1,3 +1,4 @@
+import math
 import random
 
 from PySide6.QtCore import QTimer, Qt
@@ -36,8 +37,16 @@ class GraphScene(QGraphicsScene):
         self.timer.start(16)
 
     def spawn_nodes(self):
-        for i in range(len(self.nodes)):
+        RADIUS = 100
+        nodes_quantity = len(self.nodes)
+        for i in range(nodes_quantity):
             node = self.nodes[i]
+
+            angle = (2 * math.pi / nodes_quantity) * i
+            x = RADIUS * math.cos(angle)
+            y = RADIUS * math.sin(angle)
+
+            node.setPos(x, y)
 
             self.addItem(node)
             self.handle_frame()

@@ -1,5 +1,5 @@
 from PySide6.QtCore import QRect, Qt
-from PySide6.QtGui import QBrush, QPen
+from PySide6.QtGui import QBrush, QPen, QTextBlock
 from PySide6.QtWidgets import QGraphicsEllipseItem
 
 
