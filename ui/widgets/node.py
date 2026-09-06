@@ -7,6 +7,9 @@ class GuiNode(QGraphicsEllipseItem):
     def __init__(self):
         super().__init__()
 
+        self.y_axis_velocity: float = 0.0
+        self.x_axis_velocity: float = 0.0
+
         rect = QRect(-50, -50, 100, 100)
 
         self.setRect(rect)
