@@ -1,5 +1,4 @@
 import math
-import random
 
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QGraphicsScene
@@ -7,7 +6,7 @@ from PySide6.QtWidgets import QGraphicsScene
 from ui.widgets.node import GuiNode
 
 
-REPULSION_FORCE = 4000
+REPULSION_FORCE = 5000
 GRAVITY = 0.01
 DAMPING = 0.8
 RADIUS = 400
@@ -17,7 +16,63 @@ class GraphScene(QGraphicsScene):
     def __init__(self):
         super().__init__()
 
+        self.setBackgroundBrush(Qt.GlobalColor.transparent)
+
         node_list = [
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
             GuiNode(),
             GuiNode(),
             GuiNode(),
@@ -32,8 +87,6 @@ class GraphScene(QGraphicsScene):
         self.nodes: list[GuiNode] = node_list
 
         self.spawn_nodes()
-
-        self.setBackgroundBrush(Qt.GlobalColor.transparent)
 
         self.timer: QTimer = QTimer()
         _ = self.timer.timeout.connect(self.handle_frame)
@@ -53,6 +106,7 @@ class GraphScene(QGraphicsScene):
             node.set_text(str(i + 1))
 
             self.addItem(node)
+            self.handle_frame()
 
     def apply_central_gravity(self):
         nodes_quantity = len(self.nodes)
@@ -78,17 +132,20 @@ class GraphScene(QGraphicsScene):
 
                 distance = (deltaX**2 + deltaY**2) ** 0.5
 
-                if distance < 0.1:
-                    distance = 0.1
-                    # deltaX = random.uniform(-0.1, 0.1)
-                    # deltaY = random.uniform(-0.1, 0.1)
+                if distance < 10:
+                    distance = 10
 
                 force = REPULSION_FORCE / (distance**2)
+
+                # split force into x and y axis components
                 force_x = (deltaX / distance) * force
                 force_y = (deltaY / distance) * force
 
+                # set forces to node a
                 node_a.x_axis_force += force_x
                 node_a.y_axis_force += force_y
+
+                # set a reverse force to the second node based on the third Newtons law
                 node_b.x_axis_force -= force_x
                 node_b.y_axis_force -= force_y
 
@@ -98,6 +155,7 @@ class GraphScene(QGraphicsScene):
 
         self.apply_node_repulsion()
 
+        # apply forces, damping and set positions based on the velocity
         for node in self.nodes:
             node.x_axis_velocity += node.x_axis_force
             node.y_axis_velocity += node.y_axis_force

@@ -7,6 +7,13 @@ class GuiNode(QGraphicsEllipseItem):
     def __init__(self, text: str = "0"):
         super().__init__()
 
+        # Styles
+        brush = QBrush(Qt.GlobalColor.gray)
+
+        self.setBrush(brush)
+        self.setFlag(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsMovable)
+
+        # Initialize properties
         self.radius: int = 10
         self.margin: int = 5
 
@@ -16,22 +23,16 @@ class GuiNode(QGraphicsEllipseItem):
         self.y_axis_velocity: float = 0.0
         self.x_axis_velocity: float = 0.0
 
+        # Set personal rect with the position relative to the center of the ellipse
         rect = QRect(-self.radius, -self.radius, 2 * self.radius, 2 * self.radius)
+        self.setRect(rect)
 
         self.text: QGraphicsTextItem = QGraphicsTextItem(self)
         self.text.setDefaultTextColor(Qt.GlobalColor.white)
         self.set_text(text)
 
-        self.setRect(rect)
+        # Set defaults
         self.setPos(0, 0)
-
-        pen = QPen(Qt.GlobalColor.black)
-        pen.setWidth(2)
-        brush = QBrush(Qt.GlobalColor.gray)
-
-        # self.setPen(pen)
-        self.setBrush(brush)
-        self.setFlag(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsMovable)
 
     def set_text(self, text: str):
         self.text.setPlainText(text)
