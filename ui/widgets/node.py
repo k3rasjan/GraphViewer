@@ -1,5 +1,5 @@
 from PySide6.QtCore import QRect, Qt
-from PySide6.QtGui import QBrush, QColor, QPen
+from PySide6.QtGui import QBrush, QPen
 from PySide6.QtWidgets import QGraphicsEllipseItem, QGraphicsTextItem
 
 
@@ -9,6 +9,9 @@ class GuiNode(QGraphicsEllipseItem):
 
         self.radius: int = 10
         self.margin: int = 5
+
+        self.x_axis_force: float = 0
+        self.y_axis_force: float = 0
 
         self.y_axis_velocity: float = 0.0
         self.x_axis_velocity: float = 0.0
@@ -24,9 +27,9 @@ class GuiNode(QGraphicsEllipseItem):
 
         pen = QPen(Qt.GlobalColor.black)
         pen.setWidth(2)
-        brush = QBrush(Qt.GlobalColor.blue)
+        brush = QBrush(Qt.GlobalColor.gray)
 
-        self.setPen(pen)
+        # self.setPen(pen)
         self.setBrush(brush)
         self.setFlag(QGraphicsEllipseItem.GraphicsItemFlag.ItemIsMovable)
 

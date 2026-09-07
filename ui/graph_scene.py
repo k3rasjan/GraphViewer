@@ -7,9 +7,10 @@ from PySide6.QtWidgets import QGraphicsScene
 from ui.widgets.node import GuiNode
 
 
-REPULSION_FORCE = 300000
-DAMPING = 0.4
-RADIUS = 100
+REPULSION_FORCE = 4000
+GRAVITY = 0.01
+DAMPING = 0.8
+RADIUS = 400
 
 
 class GraphScene(QGraphicsScene):
@@ -53,10 +54,20 @@ class GraphScene(QGraphicsScene):
 
             self.addItem(node)
 
-    # def apply_central_gravity(self):
-
-    def handle_frame(self):
+    def apply_central_gravity(self):
         nodes_quantity = len(self.nodes)
+        for i in range(nodes_quantity):
+            node = self.nodes[i]
+
+            node.x_axis_force = 0
+            node.y_axis_force = 0
+
+            node.x_axis_force += (-node.x()) * GRAVITY
+            node.y_axis_force += (-node.y()) * GRAVITY
+
+    def apply_node_repulsion(self):
+        nodes_quantity = len(self.nodes)
+
         for i in range(nodes_quantity):
             node_a = self.nodes[i]
             for j in range(i + 1, nodes_quantity):
@@ -69,24 +80,31 @@ class GraphScene(QGraphicsScene):
 
                 if distance < 0.1:
                     distance = 0.1
-                    deltaX = random.uniform(-0.1, 0.1)
-                    deltaY = random.uniform(-0.1, 0.1)
+                    # deltaX = random.uniform(-0.1, 0.1)
+                    # deltaY = random.uniform(-0.1, 0.1)
 
                 force = REPULSION_FORCE / (distance**2)
                 force_x = (deltaX / distance) * force
                 force_y = (deltaY / distance) * force
 
-                node_a.x_axis_velocity += force_x
-                node_a.y_axis_velocity += force_y
-                node_b.x_axis_velocity -= force_x
-                node_b.y_axis_velocity -= force_y
+                node_a.x_axis_force += force_x
+                node_a.y_axis_force += force_y
+                node_b.x_axis_force -= force_x
+                node_b.y_axis_force -= force_y
 
-                node_a.x_axis_velocity *= DAMPING
-                node_a.y_axis_velocity *= DAMPING
-                node_b.x_axis_velocity *= DAMPING
-                node_b.y_axis_velocity *= DAMPING
+    def handle_frame(self):
+
+        self.apply_central_gravity()
+
+        self.apply_node_repulsion()
 
         for node in self.nodes:
+            node.x_axis_velocity += node.x_axis_force
+            node.y_axis_velocity += node.y_axis_force
+
+            node.x_axis_velocity *= DAMPING
+            node.y_axis_velocity *= DAMPING
+
             node.setPos(
                 node.x() + node.x_axis_velocity,
                 node.y() + node.y_axis_velocity,
