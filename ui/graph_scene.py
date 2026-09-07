@@ -7,24 +7,26 @@ from PySide6.QtWidgets import QGraphicsScene
 from ui.widgets.node import GuiNode
 
 
-REPULSION_FORCE = 3000
-DAMPING = 0.8
-
-node_list = [
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-    GuiNode(),
-]
+REPULSION_FORCE = 300000
+DAMPING = 0.4
+RADIUS = 100
 
 
 class GraphScene(QGraphicsScene):
     def __init__(self):
         super().__init__()
+
+        node_list = [
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+            GuiNode(),
+        ]
 
         self.nodes: list[GuiNode] = node_list
 
@@ -37,19 +39,21 @@ class GraphScene(QGraphicsScene):
         self.timer.start(16)
 
     def spawn_nodes(self):
-        RADIUS = 100
         nodes_quantity = len(self.nodes)
         for i in range(nodes_quantity):
             node = self.nodes[i]
 
+            # Calculating initial positions around a circle of set RADIUS
             angle = (2 * math.pi / nodes_quantity) * i
             x = RADIUS * math.cos(angle)
             y = RADIUS * math.sin(angle)
 
             node.setPos(x, y)
+            node.set_text(str(i + 1))
 
             self.addItem(node)
-            self.handle_frame()
+
+    # def apply_central_gravity(self):
 
     def handle_frame(self):
         nodes_quantity = len(self.nodes)

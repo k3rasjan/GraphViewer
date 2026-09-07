@@ -7,4 +7,3 @@ window = MainWindow()
 window.show()
 
 _ = app.exec()
-
